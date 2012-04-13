@@ -1,7 +1,6 @@
 package org.robotframework.remotelibrary;
 
 import org.sikuli.script.*;
-import java.lang.reflect.*;
 
 /**
  * This work is based on project by David Luu which can 
