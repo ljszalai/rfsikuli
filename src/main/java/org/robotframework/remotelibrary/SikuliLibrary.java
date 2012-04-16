@@ -1,5 +1,7 @@
 package org.robotframework.remotelibrary;
 
+import java.lang.reflect.Field;
+
 import org.sikuli.script.*;
 
 /**
@@ -56,9 +58,15 @@ import org.sikuli.script.*;
  * Changes from original source:
  * 	- SCM has been changed to Git and it is planned to upload
  * project to GitHub
- * 	- unit tests planned and implemented
- * 	- project has been re-shaped based on project rfdblibrary
+ *  - used sikuli library had been updated to 0.10.2 and code has
+ *  been refactored accordingly 
+ *  - Settle this project as Maven build
+ * 	- TODO unit tests planned and implemented
+ * 	- TODO project has been re-shaped based on project rfdblibrary
  * available at https://github.com/ThomasJaspers/robotframework-dblibrary
+ *  - TODO (and the original goal was) implement an escape mechanism
+ *  for sending keystrokes with type_at_object method
+ *  @see type_at_object
  * 
  * To satisfy prescribed maven dependency 'sikuli-script' follow these steps:
  * 	- download sikuli from sikuli.org
@@ -74,6 +82,8 @@ import org.sikuli.script.*;
  */
 public class SikuliLibrary{
 	
+	public static IRemoteScreen s = new RemoteScreenImp();
+	
 	/**
 	 * Checks that object defined by PNG image file exists
 	 * on the screen within given timeout in seconds. 
@@ -83,7 +93,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean object_exists(String imgFile, double timeout){		
 		try{
-			Screen s = new Screen();
 			s.wait(imgFile,timeout);
 			System.out.println("Object "+imgFile+" found within "+timeout+" seconds.");
 			return true;
@@ -110,7 +119,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean wait_for_object(String imgFile, double timeout){		
 		try{
-			Screen s = new Screen();
 			System.out.println("Waiting for object "+imgFile+" for "+timeout+" seconds.");
 			s.wait(imgFile,timeout);
 			return true;
@@ -131,7 +139,6 @@ public class SikuliLibrary{
 	 * @return boolean
 	 */
 	public static boolean wait_for_object_to_disappear(String imgFile, double timeout){
-		Screen s = new Screen();
 		boolean result = s.waitVanish(imgFile,timeout);
 		if(result)
 			System.out.println("Object "+imgFile+" has disappeared within "+timeout+" seconds.");
@@ -155,8 +162,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean click_object(String imgFile, String modifierKey){		
 		try{
-			Screen s = new Screen();
-			//int modifier = getModifierValue(s,modifierKey);		
 			int modifier = getModifierValue(modifierKey);
 			System.out.println("Click object "+imgFile+" with given modifier key: "+modifierKey);
 			s.click(imgFile,modifier);	        
@@ -185,8 +190,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean double_click_object(String imgFile, String modifierKey){		
 		try{
-			Screen s = new Screen();
-			//int modifier = getModifierValue(s,modifierKey);		
 			int modifier = getModifierValue(modifierKey);
 			System.out.println("Double-click object "+imgFile+" with given modifier key: "+modifierKey);
 			s.doubleClick(imgFile,modifier);			
@@ -215,8 +218,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean right_click_object(String imgFile, String modifierKey){		
 		try{
-			Screen s = new Screen();
-			//int modifier = getModifierValue(s,modifierKey);		
 			int modifier = getModifierValue(modifierKey);
 			System.out.println("Right-click object "+imgFile+" with given modifier key: "+modifierKey);
 			s.rightClick(imgFile,modifier);			
@@ -247,8 +248,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean drag_and_drop_object(String srcImg, String targetImg, String modifierKey){		
 		try{
-			Screen s = new Screen();
-			//int modifier = getModifierValue(s,modifierKey);		
 			int modifier = getModifierValue(modifierKey);
 			//drag source to target
 			System.out.println("Drag & drop object "+srcImg+" to object "+targetImg+" with given modifier key: "+modifierKey);
@@ -270,7 +269,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean hover_over_object(String imgFile){
 		try{
-			Screen s = new Screen();
 			System.out.println("Hovering over object "+imgFile);
 			s.hover(imgFile);			
 			return true;
@@ -299,8 +297,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean type_at_object(String imgFile, String txt, String modifierKey){
 		try{
-			Screen s = new Screen();
-			//int modifier = getModifierValue(s,modifierKey);		
 			int modifier = getModifierValue(modifierKey);
 			System.out.println("Type string \""+txt+"\" to object "+imgFile+" with given modifier key: "+modifierKey);
 			s.type(imgFile,txt,modifier);
@@ -317,23 +313,19 @@ public class SikuliLibrary{
 	/**
 	 * Type given text string at or into 
 	 * object defined by PNG image file.
-	 * Specify any special keys presses to press while typing.
+	 * Specify a special keys presses to press while typing.
 	 * E.g.: ctrl, shift, alt, or meta key.
 	 * For info on meta key, see: http://en.wikipedia.org/wiki/Meta_key
-	 * Key press combinations supported in an escaped manner.
-	 * When string 'escape' sequence found in 'txt' it will be changed to
-	 * the specified Key.xxxx in the txt inline. 
+	 * Key press combinations supported.
 	 * Use null, "", or "none" as value if not using
 	 * any special keys while typing.
 	 * @param imgFile
-	 * @param escape
-	 * @param txt
+	 * @param key
 	 * @param modifierKey
 	 * @return boolean
 	 */
-	public static boolean type_at_object(String imgFile, String escape, String txt, String modifierKey){
-		if (escape.toLowerCase().equals("return")) 
-			txt = getKeyByName(escape) + txt; 
+	public static boolean type_a_key_at_object(String imgFile, String key, String modifierKey){
+		String txt = getKeyByName(key); 
 		return type_at_object(imgFile, txt, modifierKey);
 	}
 	/**
@@ -345,7 +337,6 @@ public class SikuliLibrary{
 	 */
 	public static boolean paste_at_object(String imgFile, String txt){
 		try{
-			Screen s = new Screen();
 			System.out.println("Paste string \""+txt+"\" to object "+imgFile);
 			s.paste(imgFile, txt);			
 			return true;
@@ -482,119 +473,24 @@ public class SikuliLibrary{
 		System.exit(0);
 	}
 	
-	private static String getKeyByName(String key){
+	public static String getKeyByName(String key){
 		String result = null;
-		if (key.toLowerCase().equalsIgnoreCase("space")) result = Key.SPACE;
-		else if (key.toLowerCase().equalsIgnoreCase("enter")) result = Key.ENTER;
-		else if (key.toLowerCase().equalsIgnoreCase("backspace")) result = Key.BACKSPACE;
-/*		   public static final String ENTER       = "\n";
-		   public static final String BACKSPACE   = "\b";
-		   public static final String TAB         = "\t";
-		   public static final String ESC         = "\u001b";
-		   public static final char C_ESC         = '\u001b';
-		   public static final String UP          = "\ue000";
-		   public static final char C_UP          = '\ue000';
-		   public static final String RIGHT       = "\ue001";
-		   public static final char C_RIGHT       = '\ue001';
-		   public static final String DOWN        = "\ue002";
-		   public static final char C_DOWN        = '\ue002';
-		   public static final String LEFT        = "\ue003";
-		   public static final char C_LEFT        = '\ue003';
-		   public static final String PAGE_UP     = "\ue004";
-		   public static final char C_PAGE_UP     = '\ue004';
-		   public static final String PAGE_DOWN   = "\ue005";
-		   public static final char C_PAGE_DOWN   = '\ue005';
-		   public static final String DELETE      = "\ue006";
-		   public static final char C_DELETE      = '\ue006';
-		   public static final String END         = "\ue007";
-		   public static final char C_END         = '\ue007';
-		   public static final String HOME        = "\ue008";
-		   public static final char C_HOME        = '\ue008';
-		   public static final String INSERT      = "\ue009";
-		   public static final char C_INSERT      = '\ue009';
-		   public static final String F1          = "\ue011";
-		   public static final char C_F1          = '\ue011';
-		   public static final String F2          = "\ue012";
-		   public static final char C_F2          = '\ue012';
-		   public static final String F3          = "\ue013";
-		   public static final char C_F3          = '\ue013';
-		   public static final String F4          = "\ue014";
-		   public static final char C_F4          = '\ue014';
-		   public static final String F5          = "\ue015";
-		   public static final char C_F5          = '\ue015';
-		   public static final String F6          = "\ue016";
-		   public static final char C_F6          = '\ue016';
-		   public static final String F7          = "\ue017";
-		   public static final char C_F7          = '\ue017';
-		   public static final String F8          = "\ue018";
-		   public static final char C_F8          = '\ue018';
-		   public static final String F9          = "\ue019";
-		   public static final char C_F9          = '\ue019';
-		   public static final String F10         = "\ue01A";
-		   public static final char C_F10         = '\ue01A';
-		   public static final String F11         = "\ue01B";
-		   public static final char C_F11         = '\ue01B';
-		   public static final String F12         = "\ue01C";
-		   public static final char C_F12         = '\ue01C';
-		   public static final String F13         = "\ue01D";
-		   public static final char C_F13         = '\ue01D';
-		   public static final String F14         = "\ue01E";
-		   public static final char C_F14         = '\ue01E';
-		   public static final String F15         = "\ue01F";
-		   public static final char C_F15         = '\ue01F';
-		   public static final String SHIFT       = "\ue020";
-		   public static final char C_SHIFT       = '\ue020';
-		   public static final String CTRL        = "\ue021";
-		   public static final char C_CTRL        = '\ue021';
-		   public static final String ALT         = "\ue022";
-		   public static final char C_ALT         = '\ue022';
-		   public static final String META        = "\ue023";
-		   public static final char C_META        = '\ue023';
-		   public static final String CMD         = "\ue023";
-		   public static final char C_CMD         = '\ue023';
-		   public static final String WIN         = "\ue023";
-		   public static final char C_WIN         = '\ue023';
-		   public static final String PRINTSCREEN = "\ue024";
-		   public static final char C_PRINTSCREEN = '\ue024';
-		   public static final String SCROLL_LOCK = "\ue025";
-		   public static final char C_SCROLL_LOCK = '\ue025';
-		   public static final String PAUSE       = "\ue026";
-		   public static final char C_PAUSE       = '\ue026';
-		   public static final String CAPS_LOCK   = "\ue027";
-		   public static final char C_CAPS_LOCK   = '\ue027';
-		   public static final String NUM0        = "\ue030";
-		   public static final char C_NUM0        = '\ue030';
-		   public static final String NUM1        = "\ue031";
-		   public static final char C_NUM1        = '\ue031';
-		   public static final String NUM2        = "\ue032";
-		   public static final char C_NUM2        = '\ue032';
-		   public static final String NUM3        = "\ue033";
-		   public static final char C_NUM3        = '\ue033';
-		   public static final String NUM4        = "\ue034";
-		   public static final char C_NUM4        = '\ue034';
-		   public static final String NUM5        = "\ue035";
-		   public static final char C_NUM5        = '\ue035';
-		   public static final String NUM6        = "\ue036";
-		   public static final char C_NUM6        = '\ue036';
-		   public static final String NUM7        = "\ue037";
-		   public static final char C_NUM7        = '\ue037';
-		   public static final String NUM8        = "\ue038";
-		   public static final char C_NUM8        = '\ue038';
-		   public static final String NUM9        = "\ue039";
-		   public static final char C_NUM9        = '\ue039';
-		   public static final String SEPARATOR   = "\ue03A";
-		   public static final char C_SEPARATOR   = '\ue03A';
-		   public static final String NUM_LOCK    = "\ue03B";
-		   public static final char C_NUM_LOCK    = '\ue03B';
-		   public static final String ADD         = "\ue03C";
-		   public static final char C_ADD         = '\ue03C';
-		   public static final String MINUS       = "\ue03D";
-		   public static final char C_MINUS       = '\ue03D';
-		   public static final String MULTIPLY    = "\ue03E";
-		   public static final char C_MULTIPLY    = '\ue03E';
-		   public static final String DIVIDE      = "\ue03F";
-		   public static final char C_DIVIDE      = '\ue03F';
-	*/	
+		Field[] f = Key.class.getFields();
+		for (Field fi : f ) {
+			if (fi.getName().equalsIgnoreCase(key)) {
+				try {
+					result = (String) fi.get(fi);
+				} catch (IllegalArgumentException e) {
+					System.out.println("Failed to execute getKeyByName ("+key+") -> IllegalArgumentException.");
+					System.out.println("Here's a stack dump of the caught exception for more details of failure...");
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					System.out.println("Failed to execute getKeyByName ("+key+") -> IllegalAccessException.");
+					System.out.println("Here's a stack dump of the caught exception for more details of failure...");
+					e.printStackTrace();
+				}
+			}
+		}
 		return result;
 	}
 }
