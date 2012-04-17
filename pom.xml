@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>simplesikuli</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/ljszalai/rfsikuli</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,4 +27,8 @@
     	<version>0.10.2</version>
     </dependency>
   </dependencies>
+  <scm>
+  	<url>git://github.com/ljszalai/rfsikuli.git</url>
+  	<developerConnection>lj.szalai@yahoo.com</developerConnection>
+  </scm>
 </project>

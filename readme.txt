@@ -30,7 +30,8 @@
     - integration with other Java code based tools/frameworks via
       integration or calling of this library code from Java
       
-  NOTE: Exceptions are caught and passed to standard output and
+  NOTE (and TODO :): 
+        Exceptions are caught and passed to standard output and
         method returns false. While this doesn't fit general
         programming design & Robot Framework specification for
         keyword failures, if you don't like it, feel free to remove
@@ -46,7 +47,7 @@
         just disable (no flag) dumping of the exception info, 
         as it can be a lot of extraneous text. 
   
-  @author ljszalai
+  @author David Luu and Laszlo Jozsef Szalai
   Contact: lj.szalai@yahoo.com
   
   Changes from original source:
@@ -55,7 +56,7 @@
    - used sikuli library had been updated to 0.10.2 and code has
    been refactored accordingly 
    - Settle this project as Maven build
-  	- TODO unit tests planned and implemented
+  	- TODO unit tests planned and implemented partially
   	- TODO project has been re-shaped based on project rfdblibrary
   available at https://github.com/ThomasJaspers/robotframework-dblibrary
    - TODO (and the original goal was) implement an escape mechanism
