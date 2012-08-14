@@ -26,6 +26,32 @@
     	<artifactId>sikuli-script</artifactId>
     	<version>0.10.2</version>
     </dependency>
+    		<dependency>
+			<groupId>org.robotframework</groupId>
+			<artifactId>javalib-core</artifactId>
+			<version>0.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.robotframework</groupId>
+			<artifactId>jvmconnector</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jrobotremoteserver</groupId>
+			<artifactId>simple</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jrobotremoteserver</groupId>
+			<artifactId>simple-xmlrpc</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jrobotremoteserver</groupId>
+			<artifactId>xmlrpc</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+    
   </dependencies>
   <scm>
   	<url>git://github.com/ljszalai/rfsikuli.git</url>
