@@ -51,12 +51,10 @@
   Contact: lj.szalai@yahoo.com
   
   Changes from original source:
-  	- SCM has been changed to Git and it is planned to upload
-  project to GitHub
-   - used sikuli library had been updated to 0.10.2 and code has
-   been refactored accordingly 
+   - SCM has been changed to Git and project was pushed to GitHub
+   - used sikuli library had been updated to 0.10.2 and code has been refactored accordingly 
    - Settle this project as Maven build
-  	- TODO unit tests planned and implemented partially
+  	- TODO unit tests planned and implemented partially yet
   	- TODO project has been re-shaped based on project rfdblibrary
   available at https://github.com/ThomasJaspers/robotframework-dblibrary
    - TODO (and the original goal was) implement an escape mechanism
@@ -74,4 +72,16 @@
   			-Dversion=0.10.2 
   			-Dpackaging=jar
  
+  To satisfy prescribed maven dependency 'jvmconnector' follow these steps:
+  	- download jvmconnector from http://code.google.com/p/robotframework-javatools/downloads/list
+  	- go to folder where jvmconnector-1.1-jar-with-dependencies.jar resides 
+  	- issue the following command there:
+  	    mvn install:install-file 
+  	    	-Dfile=jvmconnector-1.1-jar-with-dependencies.jar 
+  	    	-DgroupId=org.robotframework 
+  	    	-DartifactId=jvmconnector 
+  	    	-Dversion=1.1 
+  	    	-Dpackaging=jar
+  	
+  	Note: file names and version numbers may vary.
  
