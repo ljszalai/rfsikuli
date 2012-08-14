@@ -1,8 +1,9 @@
 /**
  * 
  */
-package org.robotframework.remotelibrary;
+package org.robotframework.remotelibrary.test;
 
+import org.robotframework.remotelibrary.IRemoteScreen;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Match;
 

@@ -1,10 +1,12 @@
-package org.robotframework.remotelibrary;
+package org.robotframework.remotelibrary.test;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.robotframework.remotelibrary.SikuliLibrary;
+import org.sikuli.script.Key;
 
 public class SikuliLibraryClassTest {
 
@@ -92,6 +94,8 @@ public class SikuliLibraryClassTest {
 		assertTrue(ts2.equalsIgnoreCase("Babe\tBabe"));
 		String ts3 = "Babe" + SikuliLibrary.getKeyByName("space") + "Babe";
 		assertTrue(ts3.equalsIgnoreCase("Babe Babe"));
+		String ts4 = "Babe" + SikuliLibrary.getKeyByName("down") + "Babe";
+		assertTrue(ts4.equalsIgnoreCase("Babe" + Key.DOWN + "Babe"));
 	}
 
 }

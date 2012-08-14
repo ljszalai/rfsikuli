@@ -1,4 +1,4 @@
-package org.robotframework.remotelibrary;
+package org.robotframework.remotelibrary.test;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
