@@ -1,4 +1,4 @@
-package org.robotframework.remotelibrary;
+package org.robot.sikulilibrary;
 
 import java.lang.reflect.Field;
 
@@ -17,9 +17,9 @@ import org.sikuli.script.*;
  * @author David Luu and Laszlo Jozsef Szalai
  * 
  */
-public class SikuliLibrary{
+public class SikuliKeywords{
 	
-	public static IRemoteScreen s = new RemoteScreenImp();
+	private static IRemoteScreen s = new RemoteScreenImp();
 	
 	/**
 	 * Checks that object defined by PNG image file exists
@@ -409,7 +409,19 @@ public class SikuliLibrary{
 		System.out.println("");		
 		System.exit(0);
 	}
-	
+
+	public static IRemoteScreen getScreen() {
+		return s;
+	}
+
+	public static void setScreen(IRemoteScreen s) {
+		if (getCallerMethodName(3).contains("setUp")) {
+			SikuliKeywords.s = s;
+		} else {
+			System.out.println("Failed to execute setScreen -> This method is only effective when called from a test setUp method.");
+		}
+	}
+
 	public static String getKeyByName(String key){
 		String result = null;
 		Field[] f = Key.class.getFields();
@@ -429,5 +441,10 @@ public class SikuliLibrary{
 			}
 		}
 		return result;
+	}
+	
+	private static String getCallerMethodName(int i) {
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		return stackTraceElements[i].getMethodName().toString();
 	}
 }

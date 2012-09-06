@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.robotframework.remotelibrary;
+package org.robot.sikulilibrary;
 
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Match;

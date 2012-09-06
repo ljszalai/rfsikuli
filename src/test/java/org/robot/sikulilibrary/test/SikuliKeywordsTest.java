@@ -1,4 +1,4 @@
-package org.robotframework.remotelibrary.test;
+package org.robot.sikulilibrary.test;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -7,7 +7,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple App.
  */
-public class SikuliLibraryTest 
+public class SikuliKeywordsTest 
     extends TestCase
 {
     /**
@@ -15,7 +15,7 @@ public class SikuliLibraryTest
      *
      * @param testName name of the test case
      */
-    public SikuliLibraryTest( String testName )
+    public SikuliKeywordsTest( String testName )
     {
         super( testName );
     }
@@ -25,7 +25,7 @@ public class SikuliLibraryTest
      */
     public static Test suite()
     {
-        return new TestSuite( SikuliLibraryTest.class );
+        return new TestSuite( SikuliKeywordsTest.class );
     }
 
     /**
