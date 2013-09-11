@@ -1,4 +1,13 @@
 
+  Important note before read the followings:
+  This project has been abandoned.
+  This library had been developed for an earlyer version of Sikuli
+  and since the new version came out this library is no longer
+  supported. Reports about its usability are apreciated though.
+  Thank you for your understanding.
+  
+  ---- 8< ---- 8= ---- 8< ---- 8= ---- 8< ---- 8= ---- 8< ---- 8= ----  
+
   This work is based on project by David Luu which can 
   be found at http://code.google.com/p/simplesikuli/
   
